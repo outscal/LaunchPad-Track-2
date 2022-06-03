@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 		isGameStart = false;
+		resetGame();
 	}
 
 	public bool IsGameStart() => isGameStart;
@@ -33,7 +34,11 @@ public class GameManager : MonoBehaviour
 
 	public void GameStart()
 	{
-		isGameStart = true;
+		isGameStart = true;	
+	}
+
+	internal void resetGame()
+	{
 		player.ResetPlayer();
 	}
 }

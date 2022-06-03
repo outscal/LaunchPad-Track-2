@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class UIController : MonoBehaviour
 {
 	public GameManager gameManager;
+	public CameraController cam;
 
 	public GameObject MainMenuPanel;
 	public GameObject GameOverPanel;
@@ -17,22 +19,36 @@ public class UIController : MonoBehaviour
 		ShowMenu();
 	}
 
-	internal void PlayerWin()
+	public void PlayerWin()
 	{
 		GameOverText.text = "WIN";
-		GameOverPanel.SetActive(true);
+		gameOverPanelReveal();
 	}
 
-	internal void PlayerLose()
+	public void PlayerLose()
 	{
 		GameOverText.text = "LOSE";
+		gameOverPanelReveal();
+	}
+
+	public void gameOverPanelReveal()
+	{
+		StartCoroutine(CameraShake());
+	}
+	
+	IEnumerator CameraShake()
+	{
+		cam.CameraShake(true);
+		yield return new WaitForSeconds(2f);
 		GameOverPanel.SetActive(true);
+		cam.CameraShake(false);
 	}
 
 	public void ShowMenu()
 	{
 		GameOverPanel.SetActive(false);
 		MainMenuPanel.SetActive(true);
+		gameManager.resetGame();
 	}
 
 	public void GameStart()
