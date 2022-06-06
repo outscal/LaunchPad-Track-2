@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public UIController ui;
     public PlayerController player;
+	public AudioManager audioManager;
 
     private bool isGameStart;
 
@@ -24,21 +25,25 @@ public class GameManager : MonoBehaviour
 
 		if(isWin)
 		{
+			audioManager.PlayWin();
 			ui.PlayerWin();
 		}
 		else
 		{
+			audioManager.PlayDeath();
 			ui.PlayerLose();
 		}
 	}
 
 	public void GameStart()
 	{
-		isGameStart = true;	
+		isGameStart = true;
+		audioManager.PlayClick();
 	}
 
 	internal void resetGame()
 	{
+		audioManager.PlayClick();
 		player.ResetPlayer();
 	}
 }

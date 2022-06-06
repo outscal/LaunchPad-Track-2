@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +10,17 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
 	private Vector2 moveDirection;
 
+	public List<AudioClip> runClips;
+	public AudioSource source;
+	private bool isPlaying;
+
 	private Rigidbody2D rb;
 
 	private void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		InitalPosition = transform.position;
+		isPlaying = false;
 	}
 
 	public void ResetPlayer()
@@ -37,7 +41,26 @@ public class PlayerController : MonoBehaviour
 	private void FixedUpdate()
 	{
 		if (gameManager.IsGameStart())
+		{
 			MovePlayer();
+			PlayMoveAudio();
+		}
+	}
+
+	private void PlayMoveAudio()
+	{
+		if (moveDirection == Vector2.zero || isPlaying)
+			return;
+		source.clip = runClips[Random.Range(0,runClips.Count)];
+		source.Play();
+		StartCoroutine(RunningAudio());
+	}
+
+	IEnumerator RunningAudio()
+	{
+		isPlaying = true;
+		yield return new WaitForSeconds(0.25f);
+		isPlaying = false;
 	}
 
 	private void MovePlayer()
